@@ -22,7 +22,27 @@ export default function Application() {
 
   const setDay = (day) => setState({ ...state, day });
 
- 
+  function bookInterview(id, interview) {
+    console.log(id, interview);
+    
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+
+    return axios.put(`/api/appointments/${id}`, {interview})
+    .then(() => {
+      setState({...state, appointments});
+    });
+  }
+
+
 
   const schedule = appointmentsInfo.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
@@ -34,6 +54,7 @@ export default function Application() {
         time={appointment.time}
         interview={interview}
         interviewers={interviewersPerDay}
+        bookInterview={bookInterview}
       />
     );
   });
@@ -71,7 +92,7 @@ export default function Application() {
           alt='Lighthouse Labs'
         />{' '}
       </section>
-      <section className='schedule'>{schedule};</section>
+      <section className='schedule'>{schedule}</section>
     </main>
   );
 }

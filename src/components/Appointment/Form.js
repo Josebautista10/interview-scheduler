@@ -29,9 +29,7 @@ const Form = (props) => {
             placeholder='Enter Student Name'
             value={name}
             onChange={(e) => setName(e.target.value)}
-            /*
-            This must be a controlled component
-          */
+
           />
         </form>
         <InterviewerList
@@ -45,9 +43,7 @@ const Form = (props) => {
           <Button danger onClick={cancel}>
             Cancel
           </Button>
-          <Button confirm onClick={props.onSave}>
-            Save
-          </Button>
+          <Button onClick={() => props.save(name, interviewer)} confirm>Save</Button>
         </section>
       </section>
     </main>

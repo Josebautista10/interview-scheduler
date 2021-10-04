@@ -11,13 +11,12 @@ export default function useVisualMode(initial) {
     setMode(() => newMode);
   };
 
-  const back = () => {
-    // the user may go back to their previous component, as long as it was not their first move
-    if (history[history.length - 1] !== initial) {
-      history.pop();
-      setMode(() => history[history.length - 1]);
+  function back() {
+    if (history.length > 1) {
+      const updatedHistory = history.slice(0, history.length - 1)
+      setMode(updatedHistory[updatedHistory.length - 1])
+      setHistory(updatedHistory)
     }
-  };
-
+  }
   return { mode, transition, back };
 }
