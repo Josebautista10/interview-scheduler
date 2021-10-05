@@ -6,6 +6,7 @@ import Header from './Header';
 import Show from './Show';
 import Empty from './Empty';
 import Status from './Status';
+import Confirm from './Confirm';
 import Form from './Form';
 
 import useVisualMode from "hooks/useVisualMode";
@@ -14,6 +15,9 @@ const EMPTY = 'EMPTY';
 const SHOW = 'SHOW';
 const CREATE = 'CREATE';
 const SAVING = 'SAVING';
+const DELETING = 'DELETING';
+const CONFIRM = 'CONFIRM';
+const EDIT = 'EDIT';
 
 
 
@@ -32,6 +36,13 @@ const Appointment = (props) => {
         .then(() => transition(SHOW))
     }
 
+    const deleteAppt = (id) => {
+      transition(DELETING)
+    props
+      .cancelInterview(id)
+      .then(() => transition(EMPTY))
+    }
+
   return (
     <article className='appointment'>
       <Header time={props.time} />
@@ -40,6 +51,8 @@ const Appointment = (props) => {
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
+          onDelete={() => transition(CONFIRM)}
+          onEdit = {()=> transition(EDIT)}
         />
       )}
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
@@ -47,10 +60,28 @@ const Appointment = (props) => {
         <Form
           interviewers={props.interviewers}
           onCancel={() => back()}
-          save={save}
+          onSave={save}
         />
       )}
-      {mode === SAVING && <Status />}
+      {mode === EDIT && (
+        <Form
+          name={props.interview.student}
+          interviewer={props.interview.interviewer.id}
+          interviewers={props.interviewers}
+          onCancel={() => back()}
+          onSave={save}
+        />
+      )}
+      {mode === SAVING && <Status message="Saving"/>}
+      {mode === DELETING && <Status message="Deleting"/>}
+      {mode === CONFIRM && (
+        <Confirm
+          message='Are you sure you would like to delete this appointment?' 
+          onCancel={() => back()}
+          save={save}
+          onConfirm={() => deleteAppt(props.id)}
+        />
+      )}
     </article>
   );
 };
