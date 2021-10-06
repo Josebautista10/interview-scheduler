@@ -40,11 +40,11 @@ export default function useApplicationData() {
         days: all[0].data,
         appointments: all[1].data,
         interviewers: all[2].data
-      }));
+      })) 
     });
   }, []);
 
-  const bookInterview = (id, interview) => {
+  const bookInterview = async (id, interview) => {
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -55,7 +55,7 @@ export default function useApplicationData() {
       [id]: appointment
     };
 
-    return axios.put(`/api/appointments/${id}`, { interview }).then(() => {
+    await axios.put(`/api/appointments/${id}`, { interview }).then(() => {
       const days = setSpots(id, appointments);
       setState({ ...state, appointments, days });
     });
