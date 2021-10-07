@@ -4,7 +4,6 @@ import DayListItem from './DayListItem';
 export default function DayList(props) {
   const { days, value, onChange } = props;
 
-
   const dayList = days.map((currentDay) => {
     return (
       <DayListItem
@@ -15,12 +14,7 @@ export default function DayList(props) {
         setDay={() => onChange(currentDay.name)}
       />
     );
-  })
+  });
 
-  return (
-    <ul>
-      {dayList}
-    </ul>
-  );
-};
-
+  return <ul>{dayList}</ul>;
+}
